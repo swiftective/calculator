@@ -1,0 +1,36 @@
+:root {
+  background-color: #121212;
+  color: White;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  width: clamp(300px, 500px, 500px);
+  height: 80vh;
+}
+
+#display {
+  width: 40px;
+  height: 40px;
+  background-color: White;
+}
+
+.numKeys{}
+
+.opKeys{}
+
+#delete{}
+
+#clear{}
+
+#equal{}
+
+#dot{}
