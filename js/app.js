@@ -1,30 +1,15 @@
-function add(n, m) {
-  return m + n;
-}
-
-function subtract(n, m) {
-  return m - n;
-}
-
-function divide(n, m) {
-  return m / n;
-}
-
-function multiply(n, m) {
-  return m * n;
-}
-
 function operate(n, m, func) {
-  if (func == 'add') return add(n, m);
-  if (func == 'subtract') return subtract(n, m);
-  if (func == 'divide') return divide(n, m);
-  if (func == 'multiply') return multiply(n, m);
+  if (func == 'add') return m + n;
+  if (func == 'subtract') return m - n;
+  if (func == 'divide') return m / n;
+  if (func == 'multiply') return m * n;
+  return n;
 }
 
 const CAL = {
-  result: undefined,
+  result: 0,
   input: undefined,
-  operator: undefined,
+  operator: 'add',
 };
 
 const NUM_KEYS = document.querySelectorAll('.numKeys');
@@ -32,17 +17,19 @@ const OP_KEYS = document.querySelectorAll('.opKeys');
 const RESULT = document.getElementById('result');
 const INPUT = document.getElementById('input');
 const CLEAR = document.getElementById('clear');
+
 CLEAR.onclick = () => {
   RESULT.innerText = '';
-  INPUT.innerText = '';
-  CAL.input = 0
-  CAL.operator = 0
-  CAL.result = 0
-}
+  INPUT.innerText = '0';
+  CAL.result = 0;
+  CAL.operator = 'add';
+  CAL.input = undefined;
+};
 
 NUM_KEYS.forEach((data) => data.addEventListener('click', updateInput));
 
 function updateInput(e) {
+  if (CAL.input == undefined) INPUT.innerText = '';
   INPUT.innerText += e.target.innerText;
   CAL.input = parseFloat(INPUT.innerText);
 }
@@ -50,21 +37,15 @@ function updateInput(e) {
 OP_KEYS.forEach((data) => data.addEventListener('click', updateResult));
 
 function updateResult(e) {
-  if (!INPUT.innerText) return;
-  if (e.target.innerText == '=' && CAL.result != undefined) {
-    RESULT.innerText = operate(CAL.input, CAL.result, CAL.operator)
-    INPUT.innerText = '';
-    return;
+  if (CAL.operator == 'equal' && e.target.getAttribute('data-opt') != 'equal') {
+    RESULT.innerText = `${CAL.result} ${e.target.innerText}`;
+    CAL.operator = e.target.getAttribute('data-opt');
   }
-  if(RESULT.innerText) {
-    CAL.result = operate(CAL.input, CAL.result, CAL.operator)
-    RESULT.innerText = `${CAL.result} ${e.target.innerText} `
-    CAL.operator = e.target.getAttribute("data-opt");
-    INPUT.innerText = '';
-    return;
-  };
-  CAL.result = CAL.input;
-  CAL.operator = e.target.getAttribute("data-opt");
-  RESULT.innerText = `${CAL.result} ${e.target.innerText} `
-  INPUT.innerText = '';
+  if (CAL.input == undefined) return;
+  CAL.result = operate(CAL.input, CAL.result, CAL.operator);
+  CAL.operator = e.target.getAttribute('data-opt');
+  RESULT.innerText = `${CAL.result} ${e.target.innerText}`;
+  if (CAL.operator == 'equal') RESULT.innerText = CAL.result;
+  CAL.input = undefined;
+  INPUT.innerText = '0';
 }
