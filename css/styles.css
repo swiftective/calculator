@@ -20,6 +20,10 @@ button {
   border-radius: 10px;
 }
 
+button:hover {
+  background-color: #3a3131;
+}
+
 #container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -61,19 +65,15 @@ button {
   background-color: #9e2828;
 }
 
+#clear:hover {
+  background-color: #ad2f2f;
+}
+
 #delete {
   grid-column: span 2;
   background-color: #204886;
 }
 
-.numKeys {
-}
-
-.opKeys {
-}
-
-#equal {
-}
-
-#dot {
+#delete:hover {
+  background-color: #2556a2;
 }
