@@ -34,12 +34,9 @@ CAL.delete = () => {
     return;
   }
   INPUT.innerText = INPUT.innerText.slice(0, -1);
-  if (INPUT.innerText != '') {
-    CAL.input = parseFloat(INPUT.innerText);
-    return;
-  }
-  INPUT.innerText = '0';
-  CAL.input = 0;
+  if (!INPUT.innerText) INPUT.innerText = '0';
+  CAL.input = parseFloat(INPUT.innerText);
+  if (CAL.input == 0) CAL.input = undefined;
 };
 DELETE.onclick = CAL.delete;
 
