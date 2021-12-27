@@ -17,6 +17,7 @@ const OP_KEYS = document.querySelectorAll('.opKeys');
 const RESULT = document.getElementById('result');
 const INPUT = document.getElementById('input');
 const CLEAR = document.getElementById('clear');
+const DELETE = document.getElementById('delete');
 
 CLEAR.onclick = () => {
   RESULT.innerText = '';
@@ -24,6 +25,18 @@ CLEAR.onclick = () => {
   CAL.result = 0;
   CAL.operator = 'add';
   CAL.input = undefined;
+};
+
+DELETE.onclick = () => {
+  if (INPUT.innerText == '0' && CAL.input == undefined) {
+    CAL.operator = 'equal';
+    RESULT.innerText = CAL.result;
+    return;
+  }
+  INPUT.innerText = INPUT.innerText.slice(0, -1);
+  if (!INPUT.innerText) INPUT.innerText = '0';
+  CAL.input = parseFloat(INPUT.innerText);
+  if (CAL.input == 0) CAL.input = undefined;
 };
 
 NUM_KEYS.forEach((data) => data.addEventListener('click', updateInput));
@@ -37,6 +50,10 @@ function updateInput(e) {
 OP_KEYS.forEach((data) => data.addEventListener('click', updateResult));
 
 function updateResult(e) {
+  if (CAL.operator == 'equal' && CAL.input != undefined) {
+    CAL.result = CAL.input;
+    CAL.input = undefined;
+  }
   if (CAL.operator == 'equal' && e.target.getAttribute('data-opt') != 'equal') {
     RESULT.innerText = `${CAL.result} ${e.target.innerText}`;
     CAL.operator = e.target.getAttribute('data-opt');
