@@ -69,6 +69,10 @@ function updateResult(e) {
   CAL.operator = e.target.getAttribute('data-opt');
   RESULT.innerText = `${CAL.result} ${e.target.innerText}`;
   if (CAL.operator == 'equal') RESULT.innerText = CAL.result;
+  if (CAL.input == 0 && CAL.result == Infinity) {
+    RESULT.innerText = "Math Error";
+    CAL.result = 0;
+  }
   CAL.input = undefined;
   INPUT.innerText = '0';
 }
