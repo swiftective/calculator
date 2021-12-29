@@ -6,73 +6,73 @@ function operate(n, m, func) {
   return n;
 }
 
-const CAL = {
+const calculator = {
   result: 0,
   input: undefined,
   operator: 'add',
 };
 
-const NUM_KEYS = document.querySelectorAll('.numKeys');
-const OP_KEYS = document.querySelectorAll('.opKeys');
-const RESULT = document.getElementById('result');
-const INPUT = document.getElementById('input');
-const CLEAR = document.getElementById('clear');
-const DELETE = document.getElementById('delete');
+const numberKeys = document.querySelectorAll('.numKeys');
+const operatorKeys = document.querySelectorAll('.opKeys');
+const resultScreen = document.getElementById('result');
+const inputScreen = document.getElementById('input');
+const clearButton = document.getElementById('clear');
+const deleteButton = document.getElementById('delete');
 
-CLEAR.onclick = () => {
-  RESULT.innerText = '';
-  INPUT.innerText = '0';
-  CAL.result = 0;
-  CAL.operator = 'add';
-  CAL.input = undefined;
+clearButton.onclick = () => {
+  resultScreen.innerText = '';
+  inputScreen.innerText = '0';
+  calculator.result = 0;
+  calculator.operator = 'add';
+  calculator.input = undefined;
 };
 
-CAL.delete = () => {
-  if (INPUT.innerText == '0' && CAL.input == undefined) {
-    CAL.operator = 'equal';
-    RESULT.innerText = CAL.result;
+calculator.delete = () => {
+  if (inputScreen.innerText == '0' && calculator.input == undefined) {
+    calculator.operator = 'equal';
+    resultScreen.innerText = calculator.result;
     return;
   }
-  INPUT.innerText = INPUT.innerText.slice(0, -1);
-  if (!INPUT.innerText) INPUT.innerText = '0';
-  CAL.input = parseFloat(INPUT.innerText);
-  if (CAL.input == 0) CAL.input = undefined;
+  inputScreen.innerText = inputScreen.innerText.slice(0, -1);
+  if (!inputScreen.innerText) inputScreen.innerText = '0';
+  calculator.input = parseFloat(inputScreen.innerText);
+  if (calculator.input == 0) calculator.input = undefined;
 };
-DELETE.onclick = CAL.delete;
+deleteButton.onclick = calculator.delete;
 
 // KEY BOARD SUPPORT
 window.addEventListener('keydown', (e) => {
-  if (e.key == 'Backspace') CAL.delete();
+  if (e.key == 'Backspace') calculator.delete();
 });
 
-NUM_KEYS.forEach((data) => data.addEventListener('click', updateInput));
+numberKeys.forEach((data) => data.addEventListener('click', updateInput));
 
 function updateInput(e) {
-  if (CAL.input == undefined) INPUT.innerText = '';
-  INPUT.innerText += e.target.innerText;
-  CAL.input = parseFloat(INPUT.innerText);
+  if (calculator.input == undefined) inputScreen.innerText = '';
+  inputScreen.innerText += e.target.innerText;
+  calculator.input = parseFloat(inputScreen.innerText);
 }
 
-OP_KEYS.forEach((data) => data.addEventListener('click', updateResult));
+operatorKeys.forEach((data) => data.addEventListener('click', updateResult));
 
 function updateResult(e) {
-  if (CAL.operator == 'equal' && CAL.input != undefined) {
-    CAL.result = CAL.input;
-    CAL.input = undefined;
+  if (calculator.operator == 'equal' && calculator.input != undefined) {
+    calculator.result = calculator.input;
+    calculator.input = undefined;
   }
-  if (CAL.operator == 'equal' && e.target.getAttribute('data-opt') != 'equal') {
-    RESULT.innerText = `${CAL.result} ${e.target.innerText}`;
-    CAL.operator = e.target.getAttribute('data-opt');
+  if (calculator.operator == 'equal' && e.target.getAttribute('data-opt') != 'equal') {
+    resultScreen.innerText = `${calculator.result} ${e.target.innerText}`;
+    calculator.operator = e.target.getAttribute('data-opt');
   }
-  if (CAL.input == undefined) return;
-  CAL.result = operate(CAL.input, CAL.result, CAL.operator);
-  CAL.operator = e.target.getAttribute('data-opt');
-  RESULT.innerText = `${CAL.result} ${e.target.innerText}`;
-  if (CAL.operator == 'equal') RESULT.innerText = CAL.result;
-  if (CAL.input == 0 && CAL.result == Infinity) {
-    RESULT.innerText = "Math Error";
-    CAL.result = 0;
+  if (calculator.input == undefined) return;
+  calculator.result = operate(calculator.input, calculator.result, calculator.operator);
+  calculator.operator = e.target.getAttribute('data-opt');
+  resultScreen.innerText = `${calculator.result} ${e.target.innerText}`;
+  if (calculator.operator == 'equal') resultScreen.innerText = calculator.result;
+  if (calculator.input == 0 && calculator.result == Infinity) {
+    resultScreen.innerText = "Math Error";
+    calculator.result = 0;
   }
-  CAL.input = undefined;
-  INPUT.innerText = '0';
+  calculator.input = undefined;
+  inputScreen.innerText = '0';
 }
